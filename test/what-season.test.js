@@ -73,7 +73,7 @@ describe('What season', () => {
             expect(getSeason(autumn)).to.match(/autumn|fall/);
         });
 
-        it.optional('corretly handles argument absence', function() {
+        it.optional('correctly handles argument absence', function() {
             let res = null;
             try {
                 getSeason();
