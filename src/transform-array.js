@@ -1,8 +1,6 @@
-const CustomError = require("../extensions/custom-error");
-
 function transform(arr) {
   if (!Array.isArray(arr))
-    throw new CustomError(`Expected array, got ${arr}`);
+    throw new Error(`Expected array, got ${arr}`);
 
   const transformed = [];
   let doubleNext = false;
