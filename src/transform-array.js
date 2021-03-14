@@ -1,11 +1,8 @@
 const CustomError = require("../extensions/custom-error");
 
-module.exports = function transform(arr) {
+function transform(arr) {
   if (!Array.isArray(arr))
-    throw new CustomError('Not implemented');
-
-  console.log('input');
-  console.log(arr);
+    throw new CustomError(`Expected array, got ${arr}`);
 
   const transformed = [];
   let doubleNext = false;
@@ -33,7 +30,7 @@ module.exports = function transform(arr) {
           skippedPrev = false;
         } else {
           const prev = transformed.pop();
-          if (prev) {
+          if (typeof prev !== 'undefined') {
             transformed.push(prev);
             transformed.push(prev);
           }
@@ -54,8 +51,7 @@ module.exports = function transform(arr) {
     }
   });
 
-  console.log('output');
-  console.log(transformed);
-
   return transformed;
-};
+}
+
+module.exports = transform;
