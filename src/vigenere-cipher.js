@@ -1,7 +1,7 @@
 class VigenereCipheringMachine {
   ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
   base = 'A'.charCodeAt(0);
-  max = this.ALPHABET.length;
+  max = this.ALPHABET[this.ALPHABET.length - 1];
 
   constructor(direct = true) {
     this.reverse = !direct;
@@ -11,14 +11,21 @@ class VigenereCipheringMachine {
     if (arguments.length < 2)
       throw new Error('Expected 2 arguments: message and key.');
 
+    key = key.toUpperCase();
+    let skippedCount = 0;
     const encrypted = message.toUpperCase()
         .split('')
         .map((letter, i) => {
-          if (!this.ALPHABET.includes(letter))
+          if (!this.ALPHABET.includes(letter)) {
+            ++skippedCount;
             return letter;
-          const keyShift = key.charCodeAt(i % key.length) - this.base;
-          const shift = letter.charCodeAt(0) - this.base;
-          return this.ALPHABET[(keyShift + shift) % this.max];
+          }
+          const keyShift = key.charCodeAt((i - skippedCount) % key.length) - this.base;
+          const newLetter = (letter.charCodeAt(0) + keyShift);
+          if (newLetter <= this.max.charCodeAt(0))
+              return this.ALPHABET[newLetter - this.base];
+          else
+              return this.ALPHABET[newLetter - this.max.charCodeAt(0) - 1];
         });
 
     return this.reverse ? encrypted.reverse().join('') : encrypted.join('');
@@ -28,14 +35,21 @@ class VigenereCipheringMachine {
     if (arguments.length < 2)
       throw new Error('Expected 2 arguments: message and key.');
 
+    key = key.toUpperCase();
+    let skippedCount = 0;
     const decrypted = message.toUpperCase()
         .split('')
         .map((letter, i) => {
-          if (!this.ALPHABET.includes(letter))
-              return letter;
-          const keyShift = key.charCodeAt(i % key.length) - this.base;
-          const shift = letter.charCodeAt(0) - this.base;
-          return this.ALPHABET[(this.max + shift - keyShift) % this.max];
+          if (!this.ALPHABET.includes(letter)) {
+            ++skippedCount;
+            return letter;
+          }
+          const keyShift = key.charCodeAt((i - skippedCount) % key.length) - this.base;
+          const newLetter = (letter.charCodeAt(0) - keyShift);
+          if (newLetter >= 'A'.charCodeAt(0))
+            return this.ALPHABET[newLetter - this.base];
+          else
+            return this.ALPHABET[newLetter + this.ALPHABET.length - this.base];
         });
 
     return this.reverse ? decrypted.reverse().join('') : decrypted.join('');
