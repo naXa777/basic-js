@@ -1,7 +1,7 @@
 class VigenereCipheringMachine {
     ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    base = 'A'.charCodeAt(0);
-    max = this.ALPHABET[this.ALPHABET.length - 1];
+    base = this.ALPHABET.charCodeAt(0);
+    max = this.ALPHABET.charCodeAt(this.ALPHABET.length - 1);
 
     constructor(direct = true) {
         this.reverse = !direct;
@@ -22,10 +22,10 @@ class VigenereCipheringMachine {
                 }
                 const keyShift = key.charCodeAt((i - skippedCount) % key.length) - this.base;
                 const newLetter = (letter.charCodeAt(0) + keyShift);
-                if (newLetter <= this.max.charCodeAt(0))
+                if (newLetter <= this.max)
                     return this.ALPHABET[newLetter - this.base];
                 else
-                    return this.ALPHABET[newLetter - this.max.charCodeAt(0) - 1];
+                    return this.ALPHABET[newLetter - this.max - 1];
             });
 
         return this.reverse ? encrypted.reverse().join('') : encrypted.join('');
@@ -46,7 +46,7 @@ class VigenereCipheringMachine {
                 }
                 const keyShift = key.charCodeAt((i - skippedCount) % key.length) - this.base;
                 const newLetter = (letter.charCodeAt(0) - keyShift);
-                if (newLetter >= 'A'.charCodeAt(0))
+                if (newLetter >= this.base)
                     return this.ALPHABET[newLetter - this.base];
                 else
                     return this.ALPHABET[newLetter + this.ALPHABET.length - this.base];
